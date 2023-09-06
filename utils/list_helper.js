@@ -7,7 +7,13 @@ const totalLikes = (blogs) => {
         return sum + item.likes
     }
 
-    return blogs.length === 0? 0 :  blogs.reduce(reducer, 0)
+    if (blogs.length === 0) {
+        return 0
+    } else if (blogs.length === 1) {
+        return blogs[0].likes
+    } else {
+        return blogs.reduce(reducer, 0)
+    }
 }
 
 module.exports = {

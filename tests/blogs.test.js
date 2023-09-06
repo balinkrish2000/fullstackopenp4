@@ -51,7 +51,18 @@ const blogs = [
     }  
   ]
 
-test('dummy returns one', () => {
+  const onlyOneBlog = [
+    {
+      _id: "5a422a851b54a676234d17f7",
+      title: "React patterns",
+      author: "Michael Chan",
+      url: "https://reactpatterns.com/",
+      likes: 1,
+      __v: 0
+    }
+  ]
+
+test('dummy returns 1', () => {
   const result = listHelper.dummy(blogs)
   expect(result).toBe(1)
 })
@@ -59,5 +70,13 @@ test('dummy returns one', () => {
 describe('total likes', () => {
     test('of empty list is zero', () => {
         expect(listHelper.totalLikes([])).toBe(0)
+    })
+
+    test('when the list has only one blog equals the likes of that', () => {
+      expect(listHelper.totalLikes(onlyOneBlog)).toBe(1)
+    })
+
+    test('of a bigger list is calculated right', () => {
+      expect(listHelper.totalLikes(blogs)).toBe(36)
     })
 })
