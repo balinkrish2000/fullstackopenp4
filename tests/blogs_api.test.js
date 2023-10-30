@@ -50,6 +50,14 @@ test('a valid blog can be added', async () => {
     expect(contents).toContainEqual(newBlog)
 },100000)
 
+test('defaulting likes property value', async () => {
+    const newBlog =  {
+        title: "Canonical string reduction",
+        author: "Edsger W. Dijkstra",
+        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html"
+    }
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
