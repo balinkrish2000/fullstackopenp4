@@ -56,6 +56,20 @@ test('defaulting likes property value', async () => {
         author: "Edsger W. Dijkstra",
         url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html"
     }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    
+    const updatedBlog = blogsAtEnd.filter(({id, ...blog}) => {
+        if (blog.title == "Canonical string reduction") return blog
+    })
+    expect(updatedBlog[0].likes).toBe(0)
 })
 
 afterAll(async () => {
