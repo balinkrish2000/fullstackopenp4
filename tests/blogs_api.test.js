@@ -8,11 +8,7 @@ const api = supertest(app)
 
 beforeEach(async () => {
     await Blog.deleteMany({})
-
-    const blogObjects = helper.initialBlogs
-        .map(blog => new Blog(blog))
-    const PromiseArray = blogObjects.map(blog => blog.save())
-    await Promise.all(PromiseArray)
+    await Blog.insertMany(helper.initialBlogs)
 })
 
 describe('reading from blog list', () => {
@@ -83,6 +79,36 @@ describe('adding to blog List', () => {
             .post('/api/blogs')
             .send(newBlog)
             .expect(400)
+    })
+})
+
+describe('updating blog list', () => {
+    test('update a blog list that exists', async () => {
+        const blogAtStart = await helper.blogsInDB()
+        const blogToUpdate = {
+            likes: 10
+        }
+
+        await api
+            .put(`/api/blogs/${blogAtStart[0].id}`)
+            .send(blogToUpdate)
+            .expect(200)
+
+        const updatedBlog = await helper.blogInDB(blogAtStart[0].id)
+        expect(updatedBlog[0].likes).toBe(10)
+    })
+
+    test('update a blog list that doesnt exist', async () => {
+        const blogAtStart = await helper.blogsInDB()
+        const blogToUpdate = {
+            likes: 10
+        }
+
+        await api
+            .put('/api/blogs/65410571c89888e1b6640972')
+            .send(blogToUpdate)
+            .expect(200)
+            .expect(null)
     })
 })
 
