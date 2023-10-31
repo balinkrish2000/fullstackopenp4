@@ -72,6 +72,18 @@ test('defaulting likes property value', async () => {
     expect(updatedBlog[0].likes).toBe(0)
 })
 
+test("reject blog list with title or url missing", async () => {
+    const newBlog =  {
+        author: "Edsger W. Dijkstra",
+        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html"
+    }
+    
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
-})
+},100000)
