@@ -1,5 +1,14 @@
 const logger = require('./logger')
 
+const tokenExtractor = (request, response, next) => {
+    const authToken = request.get('Authorization')
+    if (authToken && authToken.startsWith('Bearer ')) {
+        request.token =  authToken.replace('Bearer ', '')
+    }
+
+    next()
+}
+
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
   }
@@ -18,6 +27,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 module.exports = {
+    tokenExtractor,
     unknownEndpoint,
     errorHandler
 }
