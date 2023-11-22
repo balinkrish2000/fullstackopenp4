@@ -18,7 +18,7 @@ const userExtractor = (request, response, next) => {
 }
 
 const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
+    return response.status(404).send({ error: 'unknown endpoint' })
   }
   
 

@@ -6,7 +6,8 @@ const initialBlogs = [
         title: "React patterns",
         author: "Michael Chan",
         url: "https://reactpatterns.com/",
-        likes: 7
+        likes: 7,
+        user: '655dc6174227a59527bd2643'
     }
 ]
 

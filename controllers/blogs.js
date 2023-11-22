@@ -36,7 +36,7 @@ blogsRouter.get('/', async (request, response) => {
   blogsRouter.delete('/:id', async (request, response, next) => {
     const blog = await Blog.findById(request.params.id)
     if (!blog) {
-      response.status(401).json({error: 'blog not found'})
+      return response.status(402).json({error: 'blog not found'})
     }
 
     if (blog.user.toString() === request.user.toString()) {
@@ -54,10 +54,19 @@ blogsRouter.get('/', async (request, response) => {
   })
 
   blogsRouter.put('/:id', async (request, response, next) => {
-    const blog = request.body
+    const blog = await Blog.findById(request.params.id)
+    if (!blog) {
+      return response.status(402).json({error: 'blog not found'})
+    }
 
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog , {new: true})
-    response.json(updatedBlog)
+    const newBlog = request.body
+
+    if (blog.user.toString() === request.user.toString()) {
+      const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, newBlog , {new: true})
+      response.json(updatedBlog)
+    } else {
+      response.status(403).json({error: 'user not authorized to update this blog'})
+    }
   })
 
 module.exports = blogsRouter
