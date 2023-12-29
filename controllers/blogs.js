@@ -62,7 +62,7 @@ blogsRouter.get('/', async (request, response) => {
     const newBlog = request.body
 
     if (blog.user.toString() === request.user.toString()) {
-      const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, newBlog , {new: true})
+      const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, {...newBlog, user: request.user} , {new: true})
       response.json(updatedBlog)
     } else {
       response.status(403).json({error: 'user not authorized to update this blog'})
